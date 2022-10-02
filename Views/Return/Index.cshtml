@@ -1,0 +1,223 @@
+﻿<div class="row">
+
+    <div class="col-sm-4">
+
+        @using (Html.BeginForm("Save", "Return", FormMethod.Post))
+        {
+
+            <div>
+
+                <h3>Return Book</h3>
+            </div>
+
+            <div class="form-group">
+
+                <label>Member ID</label>
+                <input type="text" id="mid" name="m_id" class="form-control"
+                       placeholder="Member ID" required />
+            </div>
+
+
+            <div class="form-group">
+
+                <label>Book</label>
+                <input type="text" id="book" name="book" class="form-control"
+                       placeholder="Member Name" required />
+            </div>
+
+
+            @*  <div class="form-group">
+
+                <label>Book</label>
+                <select class=" form-control" id=" book" name="book">
+                    <option>Please Select</option>
+
+                </select>
+            </div>*@
+
+
+
+
+
+
+            @*     <div class="form-group">
+
+                <label>Issue Date</label>
+                <input type="date" id="issuedate" name="issuedate" class="form-control"
+                       placeholder="Date" required />
+            </div>
+            *@
+
+            <div class="form-group">
+
+                <label>Return Date</label>
+                <input type="date" id="returndate" name="returndate" class="form-control"
+                       placeholder="Date" required />
+            </div>
+
+
+            <div class="form-group">
+
+                <label>Days elapse</label>
+                <input type="date" id="elp" name="elp" class="form-control"
+                       placeholder="Date" required />
+            </div>
+
+
+            <div class="form-group">
+
+                <label>Fine</label>
+                <input type="date" id="returndate" name="returndate" class="form-control"
+                       placeholder="Date" required />
+            </div>
+
+
+
+
+
+            <div class="form-group">
+
+
+                <input type="submit" value="Save" class="btn btn-success"
+                       required />
+            </div>
+
+        }
+    </div>
+</div>
+
+
+@section script {
+    @*
+        @RenderSection("scripts", required: false)
+    *@
+
+
+
+    <script src="~/Scripts/jquery-3.4.1.js"></script>
+    <script src="~/Scripts/jquery-3.4.1.min.js"></script>
+    <script src="~/Scripts/jquery.validate.min.js"></script>
+
+
+
+    <script>
+        getMid()
+        getBooks();
+
+
+        function getMid() {
+
+            $("#mid").keyup(function (e) {
+
+
+
+                $.ajax({
+
+
+
+                    type: "POST",
+                    url: "/returnbook/GetMid?mid=" + $("#mid").val(),
+                    dataType: 'json',
+
+                    success: function (data) {
+
+
+                        console.log(data);
+
+                        $("#book").val(data[0].BookName)
+
+                        $("#returndate").val(new Date(parseInt(data[0].returndate.substr(6))).toLocaleDateString());
+
+
+
+
+                        var elap = data[0].elap;
+
+                        if (elap > 0) {
+
+
+
+                            var fine = elap * 100;
+                            $("elap").val(elap);
+                            $("fine").val(fine.toString());
+                        }
+                        else {
+
+                            $("elap").val(0  );
+                            $("fine").val(0);
+
+
+                        }
+
+                    }
+
+
+                });
+
+            })
+
+        }
+
+
+
+
+
+@*
+        function getBooks() {
+
+
+
+
+
+                $.ajax({
+
+
+
+                    type: "GET",
+                    url: "/IssueBook/GetBook",
+                    dataType: 'json',
+
+                    success: function (data) {
+
+                        console.log(data);
+
+
+                        for (var i = 0; i < data.length; i++)
+
+                        {
+                            $("#book_id").append($("<option>"), {
+
+                                text: data[i].Bname
+
+
+                            }
+
+
+                            )
+                        }
+
+
+                    }
+
+
+                });*@
+
+
+
+        }
+
+
+
+
+    </script>
+
+
+
+
+
+
+
+
+
+
+}
